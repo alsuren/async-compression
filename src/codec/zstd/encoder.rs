@@ -9,8 +9,13 @@ pub struct ZstdEncoder {
 
 impl ZstdEncoder {
     pub(crate) fn new(level: i32) -> Self {
+        let mut encoder = Encoder::new(level).unwrap();
+
+        // FIXME: make this configurable somehow?
+        encoder.multithread(8);
+
         Self {
-            encoder: Unshared::new(Encoder::new(level).unwrap()),
+            encoder: Unshared::new(encoder),
         }
     }
 }
